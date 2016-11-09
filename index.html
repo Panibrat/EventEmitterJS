@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Emitter</title>
+    <script src="main.js"></script>
+    <style>
+        #chekedList {text-decoration: line-through;}
+    </style>
+</head>
+<body>
+<form  id="addUIEvent">
+    Event to create:
+    <input type="text" name="eventName" required>
+    <input type="date" name="eventDay" required>
+    <input type="time" name="eventTime">
+    <input type="checkbox" name="annual" value="true">annual
+    <input type="submit" value="Create Event">( need to refresh page)
+</form>
+
+
+<script>
+    var time;
+    addUIEvent.onsubmit = function (event) {
+        event.preventDefault();
+        var name = event.target.eventName.value;
+        var date = event.target.eventDay.value;
+        var time = event.target.eventTime.value;
+        var isAnnual = event.target.eventTime.value;
+        var annual = (isAnnual == 'true');
+        var newEvent = new Event(name, date);
+        if(annual){
+            newEvent.annual = true;
+            }
+        if(time.length>0){
+            newEvent.time = time;
+            }
+        console.log(newEvent);
+        eventsList.push(newEvent);
+        updateLocalStorage();
+    }
+
+</script>
+
+<h3>FUTURE EVENTS</h3>
+<ul id="list"></ul>
+
+<script >
+    if(eventsList){
+        eventsList.forEach(function (ev) {
+            var newLi = document.createElement('li');
+            newLi.innerHTML = ev.name + '  ' + ev.date + '  ' + ev.time;
+            list.appendChild(newLi);
+        })
+    }
+</script>
+
+<h3>MISSED</h3>
+<ul id="chekedList"></ul>
+
+<script >
+    if(lostEventsList){
+        lostEventsList.forEach(function (ev) {
+            var newLi = document.createElement('li');
+            newLi.innerHTML = ev.name + ' ' + ev.date;
+            chekedList.appendChild(newLi);
+        })
+    }
+
+</script>
+</body>
+</html>
